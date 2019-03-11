@@ -29,7 +29,7 @@ public class Test extends PApplet {
 static public Test Inst;
 
 //Global startværdier
-int gamestate = 0;
+int gamestate = 0; //sørger for at vi starter på menu skærmen
 float scroll,score,speed=100;
 PVector Obstaclesize = new PVector(10, 50);
 float ObstacleFreq = 1.5f;
@@ -40,13 +40,15 @@ Player p;
 Box2DProcessing box2d;
 float f;
 
+//Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
 Button start = new Button(new PVector(250, 500), new PVector(200, 100), "start");
 
 public void setup() {
   
-      Inst = this;
+  //Gør inst brugbar
+  Inst = this;
 
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
@@ -54,13 +56,12 @@ public void setup() {
   // We are setting a custom gravity
   box2d.setGravity(0, -50);
 
-  //SpilSetup();
+  //sætter nogle værdier op før det går igang.
   startSetup();
-  
   SpilSetup();
-  //Startsetup();
 }
 
+//vælger hvilket state vi er i og kører deres kode.
 public void draw() {
   switch(gamestate) {
   case 0:
@@ -205,38 +206,22 @@ public void SpilSetup(){
   scroll = 0;
   speed=1;
   score = 0;
-  for(int i = 0; i<height; i++){
-    float spawn = random(100);
-    if(spawn<ObstacleFreq/2){
-      obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
-    }
-  }
   p = new Player(width/2,height/2,10);
   f = 10;
   particles.add(new Particle(width/2,height/2,4));
   Grab(particles.get(0).body,f*5);
+  startblokke();
   grapped = true;
   pointed = true;
 }
 
-
-
-public void startSetup(){
-  clear();
-  background(144,192,107);
-  start.show();
-  textAlign(CENTER);
-  textSize(32);
-  fill(0, 102, 153);
-  text("SlingClimb",width/2,100);
-}
 public void Spil(){
   clear();
   background(144,192,107);
   Vec2 pos = box2d.getBodyPixelCoord(p.body);
   box2d.step();
+  updateObstacle();
   scroll();
-  
   update();
   randomObs();
   p.done();
@@ -258,13 +243,6 @@ public void scroll(){
 }
 
 public void update(){
-  for (int i = obstacles.size()-1; i >= 0; i--) {
-    Obstacle b = obstacles.get(i);
-    b.display();
-    if (b.checkDeath()) {
-      obstacles.remove(i);
-    }
-  }
   p.display();
   p.move();
   for(Particle pa: particles){
@@ -272,6 +250,16 @@ public void update(){
     Grab(particles.get(0).body,f*5);
   }
   updatePoint();
+}
+
+public void updateObstacle(){
+  for (int i = obstacles.size()-1; i >= 0; i--) {
+    Obstacle b = obstacles.get(i);
+    b.display();
+    if (b.checkDeath()) {
+      obstacles.remove(i);
+    }
+  }
 }
 
 public void randomObs(){
@@ -282,8 +270,23 @@ public void randomObs(){
     obstacles.add(new Obstacle(random(width),-50-scroll-sizeY,sizeX,sizeY,getRandomBoolean(80)));
   }
 }
+
+public void startSetup(){
+  startblokke();
+}
+
 public void Start(){
-  
+  clear();
+  background(144,192,107);
+  box2d.step();
+  updateObstacle();
+  scroll();
+  randomObs();
+  start.show();
+  textAlign(CENTER);
+  textSize(32);
+  fill(0, 102, 153);
+  text("SlingClimb",width/2,100);
 }
 public boolean getRandomBoolean(float procent) {
     float rslt = random(100);
@@ -307,4 +310,14 @@ public void StartButton(){
       PApplet.main(appletArgs);
     }
   }
+  public void startblokke(){
+  for(int i = 0; i<height; i++){
+    float spawn = random(100);
+    if(spawn<ObstacleFreq/2){
+      obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
+    }
+  }
+  }
 }
+
+
