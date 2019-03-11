@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Eksamensprojekt">
+  <ClassDiagramComponents>
+    <Class name="Button" package="" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="pos" type="PVector" visibility="package"/>
+        <Field name="size" type="PVector" visibility="package"/>
+        <Field name="text" type="String" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="PVector" name="pos_"/>
+          <Argument type="PVector" name="size_"/>
+          <Argument type="String" name="text_"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="click" returnType="boolean" visibility="public"/>
+        <Method name="show" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Eksamensprojekt" package="eksamensprojekt" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Obstacle" package="" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="x" type="float" visibility="package"/>
+        <Field name="y" type="float" visibility="package"/>
+        <Field name="w" type="float" visibility="package"/>
+        <Field name="h" type="float" visibility="package"/>
+        <Field name="b" type="Body" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="float" name="x_"/>
+          <Argument type="float" name="y_"/>
+          <Argument type="float" name="w_"/>
+          <Argument type="float" name="h_"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="display" returnType="void" visibility="public"/>
+        <Method name="checkDeath" returnType="boolean" visibility="public"/>
+        <Method name="killBody" returnType="void" visibility="public"/>
+        <Method name="checksides" returnType="boolean" visibility="public">
+          <Argument type="float" name="lx"/>
+          <Argument type="float" name="ly"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Particle" package="" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="body" type="Body" visibility="package"/>
+        <Field name="r" type="float" visibility="package"/>
+        <Field name="x" type="float" visibility="package"/>
+        <Field name="y" type="float" visibility="package"/>
+        <Field name="col" type="int" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="float" name="x_"/>
+          <Argument type="float" name="y_"/>
+          <Argument type="float" name="r_"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="killBody" returnType="void" visibility="public"/>
+        <Method name="done" returnType="boolean" visibility="public"/>
+        <Method name="display" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Player" package="" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields>
+        <Field name="body" type="Body" visibility="package"/>
+        <Field name="r" type="float" visibility="package"/>
+        <Field name="col" type="int" visibility="package"/>
+        <Field name="left" type="boolean" visibility="package"/>
+        <Field name="right" type="boolean" visibility="package"/>
+        <Field name="up" type="boolean" visibility="package"/>
+        <Field name="down" type="boolean" visibility="package"/>
+        <Field name="x" type="float" visibility="package"/>
+        <Field name="y" type="float" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="package">
+          <Argument type="float" name="x_"/>
+          <Argument type="float" name="y_"/>
+          <Argument type="float" name="r_"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="killBody" returnType="void" visibility="public"/>
+        <Method name="done" returnType="boolean" visibility="public"/>
+        <Method name="display" returnType="void" visibility="public"/>
+        <Method name="makeBody" returnType="void" visibility="public">
+          <Argument type="float" name="x"/>
+          <Argument type="float" name="y"/>
+          <Argument type="float" name="r"/>
+        </Method>
+        <Method name="dir" returnType="void" visibility="public"/>
+        <Method name="nodir" returnType="void" visibility="public"/>
+        <Method name="move" returnType="void" visibility="public"/>
+        <Method name="applyForce" returnType="void" visibility="public">
+          <Argument type="Vec2" name="force"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Test" package="" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields>
+        <Field name="Inst" type="Test" visibility="public" isStatic="true"/>
+        <Field name="gamestate" type="int" visibility="package"/>
+        <Field name="scroll" type="float" visibility="package"/>
+        <Field name="Obstaclesize" type="PVector" visibility="package"/>
+        <Field name="ObstacleFreq" type="float" visibility="package"/>
+        <Field name="grapped" type="boolean" visibility="package"/>
+        <Field name="pointed" type="boolean" visibility="package"/>
+        <Field name="lx" type="float" visibility="package"/>
+        <Field name="p" type="Player" visibility="package"/>
+        <Field name="box2d" type="Box2DProcessing" visibility="package"/>
+        <Field name="f" type="float" visibility="package"/>
+        <Field name="obstacles" type="ArrayList&lt;Obstacle&gt;" visibility="package"/>
+        <Field name="particles" type="ArrayList&lt;Particle&gt;" visibility="package"/>
+        <Field name="start" type="Button" visibility="package"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="setup" returnType="void" visibility="public"/>
+        <Method name="draw" returnType="void" visibility="public"/>
+        <Method name="killAll" returnType="void" visibility="public"/>
+        <Method name="mousePressed" returnType="void" visibility="public"/>
+        <Method name="keyPressed" returnType="void" visibility="public"/>
+        <Method name="keyReleased" returnType="void" visibility="public"/>
+        <Method name="grapple" returnType="void" visibility="public"/>
+        <Method name="Grab" returnType="void" visibility="public">
+          <Argument type="Body" name="i"/>
+          <Argument type="float" name="dist"/>
+        </Method>
+        <Method name="updatePoint" returnType="void" visibility="public"/>
+        <Method name="removePoint" returnType="void" visibility="public"/>
+        <Method name="SpilSetup" returnType="void" visibility="public"/>
+        <Method name="startSetup" returnType="void" visibility="public"/>
+        <Method name="Spil" returnType="void" visibility="public"/>
+        <Method name="scroll" returnType="void" visibility="public"/>
+        <Method name="update" returnType="void" visibility="public"/>
+        <Method name="randomObs" returnType="void" visibility="public"/>
+        <Method name="Start" returnType="void" visibility="public"/>
+        <Method name="StartButton" returnType="void" visibility="public"/>
+        <Method name="settings" returnType="void" visibility="public"/>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String[]" name="passedArgs"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="obstacles" source="Test" target="Obstacle" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Obstacle&gt;"/>
+    <HasRelation name="start" source="Test" target="Button" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="Inst" source="Test" target="Test" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="p" source="Test" target="Player" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="particles" source="Test" target="Particle" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Particle&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
