@@ -26,6 +26,7 @@ import java.util.Random;
 
 //Laver Test sådan at vi kan bruge proessing andre steder
 public class Test extends PApplet {
+
 static public Test Inst;
 
 //Global startværdier
@@ -39,7 +40,6 @@ float lx,ly;
 Player p;
 Box2DProcessing box2d;
 float f;
-
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
