@@ -54,13 +54,14 @@ class Obstacle {
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier
     public void display() {
+        
+        
+        Test.Inst.stroke(0);
         if(Grabable){
         Test.Inst.fill(0,255,0);
         }else{
         Test.Inst.fill(255,0,0);
         }
-        
-        Test.Inst.stroke(0);
         Test.Inst.rectMode(PConstants.CENTER);
         Test.Inst.rect(x, y + Test.Inst.scroll, w, h);
     }

@@ -50,6 +50,7 @@ Button start = new Button(new PVector(250, 500), new PVector(200, 100), "start")
 
 public void setup() {
   
+      Inst = this;
 
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
@@ -235,7 +236,6 @@ public void Spil(){
   clear();
   background(144,192,107);
   Vec2 pos = box2d.getBodyPixelCoord(p.body);
-  println("WHY:  "+pos.y);
   box2d.step();
   scroll();
   
