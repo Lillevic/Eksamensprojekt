@@ -1,8 +1,10 @@
+//standard processing library
 import processing.core.*; 
 import processing.data.*; 
 import processing.event.*; 
 import processing.opengl.*; 
 
+//box2d for tyngdekraft og grappling
 import shiffman.box2d.*; 
 import org.jbox2d.collision.shapes.*; 
 import org.jbox2d.common.*; 
@@ -11,6 +13,7 @@ import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.Shape; 
 import org.jbox2d.dynamics.contacts.*; 
 
+//java imports
 import java.util.HashMap; 
 import java.util.ArrayList; 
 import java.io.File; 
@@ -21,25 +24,18 @@ import java.io.OutputStream;
 import java.io.IOException; 
 import java.util.Random;
 
+//Laver Test sådan at vi kan bruge proessing andre steder
 public class Test extends PApplet {
 static public Test Inst;
+
+//Global startværdier
 int gamestate = 0;
 float scroll,score,speed=100;
 PVector Obstaclesize = new PVector(10, 50);
-
 float ObstacleFreq = 1.5f;
 boolean grapped = false;
 boolean pointed = false;
 float lx,ly;
-
-
-
-
-
-
-
-
-
 Player p;
 Box2DProcessing box2d;
 float f;
@@ -146,8 +142,10 @@ public void grapple(){
     float ly = p.y+scroll+f*hi.y*5;
     ellipse(lx,ly,5,5);
     for(Obstacle wall: obstacles){
-      if(wall.checksides(lx,ly) && wall.Grabable){
-        particles.add(new Particle(lx,ly,4));
+      if(wall.checksides(lx,ly)){
+        if(wall.Grabable){
+            particles.add(new Particle(lx,ly,4));
+        }
         num = 1000;
         grapped = true;
       }
@@ -210,7 +208,7 @@ public void SpilSetup(){
   for(int i = 0; i<height; i++){
     float spawn = random(100);
     if(spawn<ObstacleFreq/2){
-      obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean()));
+      obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
     }
   }
   p = new Player(width/2,height/2,10);
@@ -281,15 +279,18 @@ public void randomObs(){
   if(spawn<ObstacleFreq*speed){
     float sizeX =  random(Obstaclesize.x*2,Obstaclesize.y*2);
     float sizeY =  random(Obstaclesize.x,Obstaclesize.y);
-    obstacles.add(new Obstacle(random(width),-50-scroll-sizeY,sizeX,sizeY,false));
+    obstacles.add(new Obstacle(random(width),-50-scroll-sizeY,sizeX,sizeY,getRandomBoolean(80)));
   }
 }
 public void Start(){
   
 }
-public boolean getRandomBoolean() {
-    int Boolean = (int)(random(1)-1);
-    return Boolean!=0;
+public boolean getRandomBoolean(float procent) {
+    float rslt = random(100);
+    if(rslt<=procent){
+        return true;
+    }
+    return false;
 }
 public void StartButton(){
   if(start.click()){
