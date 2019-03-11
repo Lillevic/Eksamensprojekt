@@ -208,7 +208,7 @@ public void SpilSetup(){
   score = 0;
   p = new Player(width/2,height/2,10);
   f = 10;
-  particles.add(new Particle(width/2,height/2,4));
+  particles.add(new Particle(width/2,height/2,10));
   Grab(particles.get(0).body,f*5);
   startblokke();
   grapped = true;
