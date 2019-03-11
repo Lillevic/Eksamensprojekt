@@ -22,14 +22,16 @@ class Obstacle {
     float y;
     float w;
     float h;
+    boolean Grabable;
     // But we also have to make a body for box2d to know about it
     Body b;
 
-    Obstacle(float x_, float y_, float w_, float h_) {
+    Obstacle(float x_, float y_, float w_, float h_, boolean Grabable_) {
         x = x_;
         y = y_;
         w = w_;
         h = h_;
+        Grabable = Grabable_;
         // Define the polygon
         PolygonShape sd = new PolygonShape();
         // Figure out the box2d coordinates
@@ -52,7 +54,12 @@ class Obstacle {
 
     // Draw the boundary, if it were at an angle we'd have to do something fancier
     public void display() {
-        Test.Inst.fill(0);
+        if(Grabable){
+        Test.Inst.fill(0,255,0);
+        }else{
+        Test.Inst.fill(255,0,0);
+        }
+        
         Test.Inst.stroke(0);
         Test.Inst.rectMode(PConstants.CENTER);
         Test.Inst.rect(x, y + Test.Inst.scroll, w, h);
