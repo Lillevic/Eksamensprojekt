@@ -37,8 +37,10 @@ boolean grapped = false;
 boolean pointed = false;
 float lx,ly;
 Player p;
+Background back;
 Box2DProcessing box2d;
 float f;
+PImage img;
 
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
@@ -55,14 +57,25 @@ public void setup() {
   box2d.createWorld();
   // We are setting a custom gravity
   box2d.setGravity(0, -50);
+  
+  
 
   //sætter nogle værdier op før det går igang.
+  back = new Background(width);
   startSetup();
   SpilSetup();
 }
 
 //vælger hvilket state vi er i og kører deres kode.
 public void draw() {
+  clear();
+  background(144,192,107);
+  back.update();
+  Vec2 pos = box2d.getBodyPixelCoord(p.body);
+  box2d.step();
+  updateObstacle();
+  scroll();
+  randomObs();
   switch(gamestate) {
   case 0:
     Start();
@@ -71,6 +84,7 @@ public void draw() {
     Spil();
     break;
   }
+  
 }
 
 public void killAll(){
@@ -84,7 +98,7 @@ public void killAll(){
   p.killBody();
   removePoint();
   gamestate = 0;
-  startSetup();
+  back = new Background(width);
 }
 
 public void mousePressed() {
@@ -113,6 +127,7 @@ public void keyPressed() {
       break;
   }
 }
+
 public void keyReleased() {
   switch(gamestate) {
     case 0:
@@ -123,6 +138,7 @@ public void keyReleased() {
       break;
   }
 }
+
 public void grapple(){
   if(grapped){
     removePoint();
@@ -157,9 +173,6 @@ public void grapple(){
   }
 }
 
-
-
-
 public void Grab(Body i,float dist){
          DistanceJointDef djd = new DistanceJointDef();
          // Connection between previous particle and this one
@@ -188,8 +201,6 @@ public void updatePoint(){
       Grab(particles.get(0).body,f*5);
     }
   }
-  println(f*5);
-  println(dist(p.x,p.y,lx,ly));
 }
 
 public void removePoint(){
@@ -200,8 +211,6 @@ public void removePoint(){
   }
 }
 
-  
-  
 public void SpilSetup(){
   scroll = 0;
   speed=1;
@@ -216,15 +225,11 @@ public void SpilSetup(){
 }
 
 public void Spil(){
-  clear();
-  background(144,192,107);
-  Vec2 pos = box2d.getBodyPixelCoord(p.body);
-  box2d.step();
-  updateObstacle();
-  scroll();
-  update();
-  randomObs();
-  p.done();
+  playerupdate();
+  if(p.done()){
+      killAll();
+      startSetup();
+  }
   fill(0);
   textAlign(LEFT);
   text("score:   "+PApplet.parseInt(score),20,30);
@@ -242,7 +247,7 @@ public void scroll(){
   score += speed;
 }
 
-public void update(){
+public void playerupdate(){
   p.display();
   p.move();
   for(Particle pa: particles){
@@ -260,6 +265,7 @@ public void updateObstacle(){
       obstacles.remove(i);
     }
   }
+  
 }
 
 public void randomObs(){
@@ -276,12 +282,6 @@ public void startSetup(){
 }
 
 public void Start(){
-  clear();
-  background(144,192,107);
-  box2d.step();
-  updateObstacle();
-  scroll();
-  randomObs();
   start.show();
   textAlign(CENTER);
   textSize(32);
@@ -297,11 +297,12 @@ public boolean getRandomBoolean(float procent) {
 }
 public void StartButton(){
   if(start.click()){
+    killAll();
     SpilSetup();
     gamestate=1;
   }
 }
-  public void settings() {  size(2000, 1000); }
+  public void settings() {  size(2000, 1000, P2D); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Test" };
     if (passedArgs != null) {
@@ -311,12 +312,15 @@ public void StartButton(){
     }
   }
   public void startblokke(){
-  for(int i = 0; i<height; i++){
-    float spawn = random(100);
-    if(spawn<ObstacleFreq/2){
-      obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
+    for(int i = 0; i<height; i++){
+      float spawn = random(100);
+      if(spawn<ObstacleFreq/2){
+        obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
+      }
     }
   }
+  public void background(){
+      
   }
 }
 

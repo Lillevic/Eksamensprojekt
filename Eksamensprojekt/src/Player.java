@@ -6,6 +6,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +30,8 @@ class Player {
     boolean down = false;
     float x;
     float y;
+    PImage img;
+    float PictureR = (float)1.5;
 
     Player(float x_, float y_, float r_) {
         r = r_;
@@ -37,6 +40,8 @@ class Player {
         x = x_;
         y = y_;
         makeBody(x_, y_, r);
+        img = Test.Inst.loadImage("Helmet.png");
+        img.resize((int)(r*2*PictureR),(int)(r*2*PictureR));
     } // This function puts the Player in the Box2d world
 
     // This function removes the Player from the box2d world
@@ -50,7 +55,6 @@ class Player {
         Vec2 pos = Test.Inst.box2d.getBodyPixelCoord(body);
         // Is it off the bottom of the screen?
         if (pos.y + Test.Inst.scroll > Test.Inst.height + 200) {
-            Test.Inst.killAll();
             return true;
         }
         return false;
@@ -68,6 +72,7 @@ class Player {
         Test.Inst.strokeWeight(1);
         Test.Inst.fill(col);
         Test.Inst.ellipse(x, y + Test.Inst.scroll, r * 2, r * 2);
+        Test.Inst.image(img, x-r*PictureR, y-r*PictureR + Test.Inst.scroll);
         // Let's add a line so we can see the rotation
         Test.Inst.line(0, 0, r, 0);
         Test.Inst.popMatrix();
