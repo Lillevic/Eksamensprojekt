@@ -25,14 +25,11 @@ class Obstacle {
     boolean Grabable;
     // But we also have to make a body for box2d to know about it
     Body b;
-    Test.Inst.PImage image;
-    Obstacle(Test.Inst.PImage image,float x_, float y_, float w_, float h_, boolean Grabable_) {
+    Obstacle(float x_, float y_, float w_, float h_, boolean Grabable_) {
         x = x_;
         y = y_;
         w = w_;
         h = h_;
-        this.image = image;
-        this.image.resize(int(x),int(y));
         Grabable = Grabable_;
         // Define the polygon
         PolygonShape sd = new PolygonShape();
@@ -66,7 +63,6 @@ class Obstacle {
         }
         Test.Inst.rectMode(PConstants.CENTER);
         Test.Inst.rect(x, y + Test.Inst.scroll, w, h);
-        Image(image, x,y);
     }
 
     public boolean checkDeath() {

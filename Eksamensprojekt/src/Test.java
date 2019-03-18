@@ -41,11 +41,7 @@ Player p;
 Background back;
 Box2DProcessing box2d;
 float f;
-<<<<<<< HEAD
 PImage img;
-
-=======
->>>>>>> 229b0b3847bd4a58aca2800be6e465dec16222a2
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
