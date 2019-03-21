@@ -300,11 +300,11 @@ public boolean getRandomBoolean(float procent) {
     }
     return false;
 }
-public void StartButton(){
+public void StartButton(){ //startknappen begynder spillet.
   if(start.click()){
-    killAll();
-    SpilSetup();
-    gamestate=1;
+    killAll(); //dræber alle resterende objekter fx dem til baggrunds animationer
+    SpilSetup(); //sætter spillet op
+    gamestate=1; //skifter spiltilstanden fra 0 (start tilstanden) til 1 (
   }
 }
   public void settings() {  size(2000, 1000, P2D); }
@@ -317,7 +317,7 @@ public void StartButton(){
     }
   }
   public void startblokke(){
-    for(int i = 0; i<height; i++){
+    for(int i = 0; i<height; i++){  //spawner et tilfædigt antal blokke,(mellem 1 og 100), i tilfældige positioner når spillet begynder da dette sørger for at der altid er en måde at komme vidrere når man starter.
       float spawn = random(100);
       if(spawn<ObstacleFreq/2){
         obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
@@ -325,28 +325,13 @@ public void StartButton(){
     }
   }
   public void leaderboard(){    
-      String total = ""+PApplet.parseInt(score);
-      
-      //list[4] = total;
-      for(String s: list){
-       text(s,20,20);   
-      }
-      for(int i=0; i < list.length;i++){
-          if(list[i] == null){
-             list = shorten(list);
-             list = reverse(list);
-             list = append(list,total);
-             list = reverse(list);
-             break;
-          }else {
+      String total = ""+PApplet.parseInt(score); //saves the current score to a string 
+      //sætter den nye score øverst på listen.
               list = shorten(list);
               list = reverse(list);
               list = append(list,total);
               list = reverse(list);
-              break;
-          }
-      }
-      saveStrings("scores.txt",list);
+      saveStrings("scores.txt",list); //gemmer listen til et tekst dokument
     }
 }
 
