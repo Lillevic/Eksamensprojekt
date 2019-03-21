@@ -42,16 +42,15 @@ Background back;
 Box2DProcessing box2d;
 float f;
 PImage img;
+String[] list;
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
 Button start = new Button(new PVector(250, 500), new PVector(200, 100), "start");
-
 public void setup() {
-  
   //Gør inst brugbar
   Inst = this;
-
+  list = loadStrings("scores.txt");
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
@@ -65,7 +64,6 @@ public void setup() {
   startSetup();
   SpilSetup();
 }
-
 //vælger hvilket state vi er i og kører deres kode.
 public void draw() {
   clear();
@@ -227,7 +225,7 @@ public void SpilSetup(){
 public void Spil(){
   playerupdate();
   if(p.done()){
-      leaderboard();
+     leaderboard();
       killAll();
       startSetup();
   }
@@ -287,8 +285,13 @@ public void Start(){
   start.show();
   textAlign(CENTER);
   textSize(32);
-  fill(0, 102, 153);
+  fill(255);
   text("SlingClimb",width/2,100);
+  text("Recent scores:",width/12,height/15-height/25);
+  for(int i=0;i<list.length;i++){
+      
+      text(list[i],width/15,height/15+height/15*i);
+  }
 }
 public boolean getRandomBoolean(float procent) {
     float rslt = random(100);
@@ -321,35 +324,30 @@ public void StartButton(){
       }
     }
   }
-  public void background(){
+  public void leaderboard(){    
+      String total = ""+PApplet.parseInt(score);
       
-  }
-  public void leaderboard(){
-    String total = ""+PApplet.parseInt(score);
-      
-      String[] points = loadStrings("scores.txt");
-      String[] points2;
-      //points[4] = total;
-      for(String s: points){
+      //list[4] = total;
+      for(String s: list){
        text(s,20,20);   
       }
-      for(int i=0; i < points.length;i++){
-          if(points[i] == null){
-             points = shorten(points);
-             points = reverse(points);
-             points = append(points,total);
-             points = reverse(points);
+      for(int i=0; i < list.length;i++){
+          if(list[i] == null){
+             list = shorten(list);
+             list = reverse(list);
+             list = append(list,total);
+             list = reverse(list);
              break;
           }else {
-              points = shorten(points);
-              points = reverse(points);
-              points = append(points,total);
-              points = reverse(points);
+              list = shorten(list);
+              list = reverse(list);
+              list = append(list,total);
+              list = reverse(list);
               break;
           }
       }
-      saveStrings("scores.txt",points);
-}
+      saveStrings("scores.txt",list);
+    }
 }
 
 
