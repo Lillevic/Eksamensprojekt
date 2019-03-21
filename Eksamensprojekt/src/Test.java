@@ -227,6 +227,7 @@ public void SpilSetup(){
 public void Spil(){
   playerupdate();
   if(p.done()){
+      leaderboard();
       killAll();
       startSetup();
   }
@@ -245,8 +246,9 @@ public void scroll(){
   scroll += speed;
   speed = speed * 1.0001f;
   score += speed;
-}
 
+}
+        
 public void playerupdate(){
   p.display();
   p.move();
@@ -322,6 +324,32 @@ public void StartButton(){
   public void background(){
       
   }
+  public void leaderboard(){
+    String total = ""+PApplet.parseInt(score);
+      
+      String[] points = loadStrings("scores.txt");
+      String[] points2;
+      //points[4] = total;
+      for(String s: points){
+       text(s,20,20);   
+      }
+      for(int i=0; i < points.length;i++){
+          if(points[i] == null){
+             points = shorten(points);
+             points = reverse(points);
+             points = append(points,total);
+             points = reverse(points);
+             break;
+          }else {
+              points = shorten(points);
+              points = reverse(points);
+              points = append(points,total);
+              points = reverse(points);
+              break;
+          }
+      }
+      saveStrings("scores.txt",points);
+}
 }
 
 
