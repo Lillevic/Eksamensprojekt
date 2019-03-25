@@ -4,7 +4,8 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import processing.core.PConstants;
-
+import processing.core.PImage;
+import processing.core.PVector;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,6 +17,11 @@ import processing.core.PConstants;
  * @author victo
  */
 class Obstacle {
+    PImage Brick;
+    //LavaBrick = Test.Inst.loadImage("LavaBrick.png");
+    //LavaBrick.resize((int)(width/wallNr),(int)(width/wallNr));
+    //Brick = Test.Inst.loadImage("GrabBrick.png");
+    //Brick.resize((int)(width/wallNr),(int)(width/wallNr));
     
     // A boundary is a simple rectangle with x,y,width,and height
     float x;
@@ -23,14 +29,22 @@ class Obstacle {
     float w;
     float h;
     boolean Grabable;
+    PVector color;
     // But we also have to make a body for box2d to know about it
     Body b;
     Obstacle(float x_, float y_, float w_, float h_, boolean Grabable_) {
+        
         x = x_;
         y = y_;
         w = w_;
         h = h_;
         Grabable = Grabable_;
+        if(Grabable){
+            Brick = Test.Inst.loadImage("GrabBrick.png");
+        }else{
+            Brick = Test.Inst.loadImage("LavaBrick.png");
+        }
+        Brick.resize((int)(w),(int)(h));
         // Define the polygon
         PolygonShape sd = new PolygonShape();
         // Figure out the box2d coordinates
@@ -57,11 +71,12 @@ class Obstacle {
         
         Test.Inst.stroke(0);
         if(Grabable){
-        Test.Inst.fill(0,255,0);
+        Test.Inst.fill(50,250,50,100);
         }else{
-        Test.Inst.fill(255,0,0);
+        Test.Inst.fill(255,0,0,0);
         }
         Test.Inst.rectMode(PConstants.CENTER);
+        Test.Inst.image(Brick,x-w/2, y-h/2 + Test.Inst.scroll);
         Test.Inst.rect(x, y + Test.Inst.scroll, w, h);
     }
 

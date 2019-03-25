@@ -31,13 +31,17 @@ static public Test Inst;
 
 //Global startværdier
 int gamestate = 0; //sørger for at vi starter på menu skærmen
-float scroll,score,speed=100;
+float scroll = 0,score,speed=100;
 PVector Obstaclesize = new PVector(10, 50);
 float ObstacleFreq = 1.5f;
 boolean grapped = false;
 boolean pointed = false;
 float lx,ly;
+
 Player p;
+float playersize = 10;
+float PictureR = (float)1.5;
+
 Background back;
 Box2DProcessing box2d;
 float f;
@@ -45,13 +49,20 @@ PImage img;
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
-Button start = new Button(new PVector(250, 500), new PVector(200, 100), "start");
+ArrayList<Background> Backgrounds = new ArrayList<Background>();
+ArrayList<Background> HolderBackgrounds = new ArrayList<Background>();
+Button start;
+
+int wallNr = 5;
+int wallint = 1;
+boolean BackLayer = false;
+PImage playerImg,Backwall,Backwin,Brick,LavaBrick;
 
 public void setup() {
   
   //Gør inst brugbar
   Inst = this;
-
+  images();
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
@@ -61,7 +72,7 @@ public void setup() {
   
 
   //sætter nogle værdier op før det går igang.
-  back = new Background(width);
+  start = new Button(new PVector(width/2, height-500), new PVector(200, 100), "start");
   startSetup();
   SpilSetup();
 }
@@ -70,7 +81,24 @@ public void setup() {
 public void draw() {
   clear();
   background(144,192,107);
-  back.update();
+  for(Background b:Backgrounds){
+    b.display();
+    if(b.done()){
+        BackLayer = true;
+        
+        ellipse(100,100,100,100);
+        //HolderBackgrounds.add(new Background(Backwall,Backgrounds.get(i).x,Backgrounds.get(i).y+width/wallNr*11/12));
+        
+    }
+  }
+  if(BackLayer){
+      for(int j = 0; j<wallNr+1;j++){
+        Backgrounds.remove(0);
+      }
+      newBackLine(height-(wallint)*width/wallNr*11/12);
+      wallint++;
+      BackLayer = false;
+  }
   Vec2 pos = box2d.getBodyPixelCoord(p.body);
   box2d.step();
   updateObstacle();
@@ -89,16 +117,20 @@ public void draw() {
 
 public void killAll(){
   println("kiling " + obstacles.size());
-  for(int i = obstacles.size()-1; i>0;i--){
+  for(int i = obstacles.size()-1; i>=0;i--){
     //println(obstacles.size());
     obstacles.get(i).killBody();
     obstacles.remove(i);
     
   }
+  for(int i = Backgrounds.size()-1; i>=0;i--){
+      Backgrounds.remove(i);
+  }
+  wallint = 1;
+  scroll = 0;
   p.killBody();
   removePoint();
   gamestate = 0;
-  back = new Background(width);
 }
 
 public void mousePressed() {
@@ -212,14 +244,13 @@ public void removePoint(){
 }
 
 public void SpilSetup(){
-  scroll = 0;
   speed=1;
   score = 0;
-  p = new Player(width/2,height/2,10);
+  p = new Player(width/2,height/2,10,playerImg,PictureR);
   f = 10;
-  particles.add(new Particle(width/2,height/2,10));
+  particles.add(new Particle(width/2,height/2,playersize));
   Grab(particles.get(0).body,f*5);
-  startblokke();
+  worldsetup();
   grapped = true;
   pointed = true;
 }
@@ -230,7 +261,7 @@ public void Spil(){
       killAll();
       startSetup();
   }
-  fill(0);
+  fill(255,255,0);
   textAlign(LEFT);
   text("score:   "+PApplet.parseInt(score),20,30);
 }
@@ -278,15 +309,15 @@ public void randomObs(){
 }
 
 public void startSetup(){
-  startblokke();
+  worldsetup();
 }
 
 public void Start(){
   start.show();
   textAlign(CENTER);
   textSize(32);
-  fill(0, 102, 153);
-  text("SlingClimb",width/2,100);
+  fill(255, 120, 0);
+  text("Slingknight",width/2,100);
 }
 public boolean getRandomBoolean(float procent) {
     float rslt = random(100);
@@ -295,6 +326,7 @@ public boolean getRandomBoolean(float procent) {
     }
     return false;
 }
+
 public void StartButton(){
   if(start.click()){
     killAll();
@@ -302,7 +334,9 @@ public void StartButton(){
     gamestate=1;
   }
 }
+
   public void settings() {  size(2000, 1000, P2D); }
+  
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Test" };
     if (passedArgs != null) {
@@ -311,16 +345,40 @@ public void StartButton(){
       PApplet.main(appletArgs);
     }
   }
-  public void startblokke(){
+  public void worldsetup(){
     for(int i = 0; i<height; i++){
       float spawn = random(100);
       if(spawn<ObstacleFreq/2){
         obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
       }
     }
+    //if(true){
+    for(wallint = 1;wallint<wallNr*2;wallint++){
+        newBackLine(height-(wallint)*width/wallNr*11/12);
+    }
+    
   }
-  public void background(){
-      
+  public void images(){
+        playerImg = Test.Inst.loadImage("Helmet.png");
+        playerImg.resize((int)(playersize*2*PictureR),(int)(playersize*2*PictureR));
+        Backwall = Test.Inst.loadImage("Brick.png");
+        Backwall.resize((int)(width/wallNr),(int)(width/wallNr));
+        Backwin = Test.Inst.loadImage("Window.png");
+        Backwin.resize((int)(width/wallNr),(int)(width/wallNr));
+        
+        
+  }
+  public void newBackLine(int y){
+      for(int i = 0; i<wallNr+1;i++){
+          int BackX = i*width/wallNr*11/12;
+          if(random(100)<=10){
+              Backgrounds.add(new Background(Backwin,BackX,y));
+          }else{
+              Backgrounds.add(new Background(Backwall,BackX,y));
+          }
+          
+          
+      }
   }
 }
 
