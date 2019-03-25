@@ -19,6 +19,14 @@ public class Background {
         img=img_;
         x=x_;
         y=y_;
+    PImage Back;
+    float y, y2;
+    int nr = 3;
+    Background(int Pwidth) {
+        y=Pwidth;
+        Test.Inst.save("noget.txt");
+        Back = Test.Inst.loadImage("Brick.png");
+        Back.resize((int)(Pwidth/nr),(int)(Pwidth/nr));
     }
     public void update(){
         display();
