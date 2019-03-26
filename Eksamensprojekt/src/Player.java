@@ -92,7 +92,7 @@ class Player {
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
         // Parameters that affect physics
-        fd.density = 1;
+        fd.density = (float)1.5;
         fd.friction = 0.01f;
         fd.restitution = 0.3f;
         // Attach fixture to body
@@ -159,10 +159,10 @@ class Player {
 
     public void move() {
         if (left == true) {
-            applyForce(new Vec2(-50, 0));
+            applyForce(new Vec2(-100, 0));
         }
         if (right == true) {
-            applyForce(new Vec2(50, 0));
+            applyForce(new Vec2(100, 0));
         }
         if (up == true) {
             Test.Inst.f = PApplet.max(0, Test.Inst.f - 0.2f);

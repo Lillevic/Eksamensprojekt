@@ -50,7 +50,6 @@ String[] list;
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
-<<<<<<< HEAD
 ArrayList<Background> Backgrounds = new ArrayList<Background>();
 ArrayList<Background> HolderBackgrounds = new ArrayList<Background>();
 Button start;
@@ -60,23 +59,18 @@ int wallint = 1;
 boolean BackLayer = false;
 PImage playerImg,Backwall,Backwin,Brick,LavaBrick;
 
-=======
-Button start = new Button(new PVector(250, 500), new PVector(200, 100), "start");
->>>>>>> c39f948f714455496a8f251509ad72b8ff6c592f
+
 public void setup() {
   //Gør inst brugbar
   Inst = this;
-<<<<<<< HEAD
   images();
-=======
   list = loadStrings("scores.txt");
->>>>>>> c39f948f714455496a8f251509ad72b8ff6c592f
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   // We are setting a custom gravity
   box2d.setGravity(0, -50);
-  
+  start = new Button(new PVector(250, 500), new PVector(200, 100), "start");
   
 
   //sætter nogle værdier op før det går igang.
@@ -327,8 +321,6 @@ public void Start(){
   textSize(32);
   fill(255, 120, 0);
   text("Slingknight",width/2,100);
-  fill(255);
-  text("SlingClimb",width/2,100);
   text("Recent scores:",width/12,height/15-height/25);
   for(int i=0;i<list.length;i++){
       
@@ -342,12 +334,9 @@ public boolean getRandomBoolean(float procent) {
     }
     return false;
 }
-<<<<<<< HEAD
 
-public void StartButton(){
-=======
+
 public void StartButton(){ //startknappen begynder spillet.
->>>>>>> c39f948f714455496a8f251509ad72b8ff6c592f
   if(start.click()){
     killAll(); //dræber alle resterende objekter fx dem til baggrunds animationer
     SpilSetup(); //sætter spillet op
@@ -360,17 +349,11 @@ public void StartButton(){ //startknappen begynder spillet.
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Test" };
     if (passedArgs != null) {
-      PApplet.main(concat(appletArgs, passedArgs));
-    } else {
-      PApplet.main(appletArgs);
+        PApplet.main(appletArgs);
     }
   }
   public void worldsetup(){
-    for(int i = 0; i<height; i++){
-=======
-  public void startblokke(){
     for(int i = 0; i<height; i++){  //spawner et tilfædigt antal blokke,(mellem 1 og 100), i tilfældige positioner når spillet begynder da dette sørger for at der altid er en måde at komme vidrere når man starter.
->>>>>>> c39f948f714455496a8f251509ad72b8ff6c592f
       float spawn = random(100);
       if(spawn<ObstacleFreq/2){
         obstacles.add(new Obstacle(random(width),i,random(Obstaclesize.x*2,Obstaclesize.y*2),random(Obstaclesize.x,Obstaclesize.y),getRandomBoolean(90)));
@@ -404,7 +387,6 @@ public void StartButton(){ //startknappen begynder spillet.
           
       }
   }
-=======
   public void leaderboard(){    
       String total = ""+PApplet.parseInt(score); //saves the current score to a string 
       //sætter den nye score øverst på listen.
@@ -414,7 +396,6 @@ public void StartButton(){ //startknappen begynder spillet.
               list = reverse(list);
       saveStrings("scores.txt",list); //gemmer listen til et tekst dokument
     }
->>>>>>> c39f948f714455496a8f251509ad72b8ff6c592f
 }
 
 
