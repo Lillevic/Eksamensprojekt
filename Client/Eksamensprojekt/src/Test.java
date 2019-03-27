@@ -47,6 +47,7 @@ Box2DProcessing box2d;
 float f;
 PImage img;
 String[] list;
+int[] scores = new int[5];
 //Start arraylists og objects
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Particle> particles = new ArrayList<Particle>();
@@ -65,6 +66,14 @@ public void setup() {
   Inst = this;
   images();
   list = loadStrings("scores.txt");
+  for(int i =0;i<list.length;i++){
+      try {
+      scores[i] = Integer.parseInt(list[i]);
+        }
+        catch (NumberFormatException e){
+         scores[i]= 0;
+        }
+  }
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
@@ -321,7 +330,7 @@ public void Start(){
   textSize(32);
   fill(255, 120, 0);
   text("Slingknight",width/2,100);
-  text("Recent scores:",width/12,height/15-height/25);
+  text("Highscores:",width/12,height/15-height/25);
   for(int i=0;i<list.length;i++){
       
       text(list[i],width/15,height/15+height/15*i);
@@ -387,13 +396,15 @@ public void StartButton(){ //startknappen begynder spillet.
           
       }
   }
-  public void leaderboard(){    
-      String total = ""+PApplet.parseInt(score); //saves the current score to a string 
-      //sætter den nye score øverst på listen.
-              list = shorten(list);
-              list = reverse(list);
-              list = append(list,total);
-              list = reverse(list);
+  public void leaderboard(){
+      int scor = (int) score;
+      scores = append(scores,scor);
+      scores = sort(scores);
+      scores = reverse(scores);
+      scores = shorten(scores);
+      for(int i =0;i<scores.length;i++){
+          list[i]= ""+PApplet.parseInt(scores[i]);
+      }
       saveStrings("scores.txt",list); //gemmer listen til et tekst dokument
     }
 }
