@@ -24,6 +24,11 @@ import java.io.OutputStream;
 import java.io.IOException; 
 import java.util.Random;
 
+import at.mukprojects.mukcast.message.*;
+import at.mukprojects.mukcast.client.*;
+import at.mukprojects.mukcast.server.*;
+import at.mukprojects.mukcast.concurrent.*;
+
 //Laver Test sådan at vi kan bruge proessing andre steder
 public class Test extends PApplet {
 
@@ -60,12 +65,18 @@ int wallint = 1;
 boolean BackLayer = false;
 PImage playerImg,Backwall,Backwin,Brick,LavaBrick;
 
+MuKCastClient client;
+ArrayList<PVector> players = new ArrayList<PVector>();
 
 public void setup() {
   //Gør inst brugbar
   Inst = this;
   images();
   list = loadStrings("scores.txt");
+  if(list.length < 1){
+      String[] Zero = {"0","0","0","0","0"};
+      list = Zero;
+  }
   for(int i =0;i<list.length;i++){
       try {
       scores[i] = Integer.parseInt(list[i]);
@@ -74,6 +85,15 @@ public void setup() {
          scores[i]= 0;
         }
   }
+  
+  client = new MuKCastClient(this, "localhost", 4242);
+  try {
+    client.connect();
+  } 
+  catch(IOException e) {
+    e.printStackTrace();
+  }
+  
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
@@ -114,12 +134,17 @@ public void draw() {
   updateObstacle();
   scroll();
   randomObs();
+  
+  
+  
   switch(gamestate) {
   case 0:
     Start();
     break;
   case 1:
     Spil();
+    sendPlayer();
+    Showplayers();
     break;
   }
   
@@ -229,7 +254,7 @@ public void Grab(Body i,float dist){
          // Make the joint.  Note we aren't storing a reference to the joint ourselves anywhere!
          // We might need to someday, but for now it's ok
          DistanceJoint dj = (DistanceJoint) box2d.world.createJoint(djd);
-         grapped = true;
+         //grapped = true;
 }
 
 public void updatePoint(){
@@ -278,7 +303,7 @@ public void Spil(){
 }
 
 public void scroll(){
-  while(p.y<400-scroll){
+  while(p.y<width/8-scroll){
     scroll += speed;
     speed = speed*1.0001f;
     randomObs();
@@ -407,6 +432,23 @@ public void StartButton(){ //startknappen begynder spillet.
       }
       saveStrings("scores.txt",list); //gemmer listen til et tekst dokument
     }
+  public void handleMessage(MuKCastClient client, Message message) {
+    players.add(((PVectorMessage) message).getPVector());
+  }
+  public void sendPlayer(){
+    try {
+      client.sendMessage(new PVectorMessage(new PVector(p.x,p.y)));
+    } 
+    catch(IOException e) {
+      e.printStackTrace();
+    } 
+  }
+  public void Showplayers(){
+    for (int i = players.size() - 1; i >= 0; i--) {
+        ellipse(players.get(i).x,players.get(i).y,20,20);
+        players.remove(i);
+    }
+  }
 }
 
 
