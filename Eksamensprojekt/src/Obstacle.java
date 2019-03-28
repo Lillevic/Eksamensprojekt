@@ -69,15 +69,8 @@ class Obstacle {
     public void display() {
         
         
-        Test.Inst.stroke(0);
-        if(Grabable){
-        Test.Inst.fill(50,250,50,100);
-        }else{
-        Test.Inst.fill(255,0,0,0);
-        }
         Test.Inst.rectMode(PConstants.CENTER);
         Test.Inst.image(Brick,x-w/2, y-h/2 + Test.Inst.scroll);
-        Test.Inst.rect(x, y + Test.Inst.scroll, w, h);
     }
 
     public boolean checkDeath() {
