@@ -37,7 +37,7 @@ class Obstacle {
         x = x_;
         y = y_;
         w = w_;
-        h = h_;
+        h = (float)(w*1.4/4);
         Grabable = Grabable_;
         if(Grabable){
             Brick = Test.Inst.loadImage("GrabBrick.png");

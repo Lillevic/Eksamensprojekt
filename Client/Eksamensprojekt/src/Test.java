@@ -86,7 +86,7 @@ public void setup() {
         }
   }
   
-  client = new MuKCastClient(this, "10.131.211.221", 4242);
+  client = new MuKCastClient(this, "192.168.0.10", 4242);
   try {
     client.connect();
   } 
