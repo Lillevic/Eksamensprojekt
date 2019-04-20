@@ -26,8 +26,9 @@ import java.util.Random;
 
 import at.mukprojects.mukcast.message.*;
 import at.mukprojects.mukcast.client.*;
-import at.mukprojects.mukcast.server.*;
-import at.mukprojects.mukcast.concurrent.*;
+//import at.mukprojects.mukcast.server.*;
+
+import custom.PVectorMessage;
 
 //Laver Test sådan at vi kan bruge proessing andre steder
 public class Test extends PApplet {
@@ -86,7 +87,7 @@ public void setup() {
         }
   }
   
-  client = new MuKCastClient(this, "192.168.0.10", 4242);
+  client = new MuKCastClient(this, "localhost", 4242);
   try {
     client.connect();
   } 
@@ -361,6 +362,7 @@ public void Start(){
       text(list[i],width/15,height/15+height/15*i);
   }
 }
+
 public boolean getRandomBoolean(float procent) {
     float rslt = random(100);
     if(rslt<=procent){
@@ -368,7 +370,6 @@ public boolean getRandomBoolean(float procent) {
     }
     return false;
 }
-
 
 public void StartButton(){ //startknappen begynder spillet.
   if(start.click()){
@@ -386,6 +387,7 @@ public void StartButton(){ //startknappen begynder spillet.
         PApplet.main(appletArgs);
     }
   }
+  
   public void worldsetup(){
     for(int i = 0; i<height; i++){  //spawner et tilfædigt antal blokke,(mellem 1 og 100), i tilfældige positioner når spillet begynder da dette sørger for at der altid er en måde at komme vidrere når man starter.
       float spawn = random(100);
@@ -399,6 +401,7 @@ public void StartButton(){ //startknappen begynder spillet.
     }
     
   }
+  
   public void images(){
         playerImg = Test.Inst.loadImage("Helmet.png");
         playerImg.resize((int)(playersize*2*PictureR),(int)(playersize*2*PictureR));
@@ -409,6 +412,7 @@ public void StartButton(){ //startknappen begynder spillet.
         
         
   }
+  
   public void newBackLine(int y){
       for(int i = 0; i<wallNr+1;i++){
           int BackX = i*width/wallNr*11/12;
@@ -421,6 +425,7 @@ public void StartButton(){ //startknappen begynder spillet.
           
       }
   }
+  
   public void leaderboard(){
       int scor = (int) score;
       scores = append(scores,scor);
@@ -432,12 +437,17 @@ public void StartButton(){ //startknappen begynder spillet.
       }
       saveStrings("scores.txt",list); //gemmer listen til et tekst dokument
     }
+  
   public void handleMessage(MuKCastClient client, Message message) {
     players.add(((PVectorMessage) message).getPVector());
   }
+  
   public void sendPlayer(){
+    PVector  playerpos = new PVector(p.x,p.y);
+    println(playerpos);
+    ellipse(playerpos.x,playerpos.y+scroll,100,100);
     try {
-      client.sendMessage(new PVectorMessage(new PVector(p.x,p.y)));
+      client.sendMessage(new PVectorMessage(playerpos));
     } 
     catch(IOException e) {
       e.printStackTrace();

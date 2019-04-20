@@ -24,9 +24,10 @@ import java.io.IOException;
 import java.util.Random;
 
 import at.mukprojects.mukcast.message.*;
-import at.mukprojects.mukcast.client.*;
+//import at.mukprojects.mukcast.client.*;
 import at.mukprojects.mukcast.server.*;
-import at.mukprojects.mukcast.concurrent.*;
+
+import custom.PVectorMessage;
 
 public class EksamenServer extends PApplet {
 
@@ -36,7 +37,6 @@ MuKCastServer server;
 
 PImage img1, img2;
 ArrayList<PVector> players = new ArrayList<PVector>();
-PVector Enemy;
 
 public void setup() {
 
@@ -80,8 +80,10 @@ public void draw() {
   }
 }
 
-public void handleMessage(MuKCastClient client, Message message) {
-  
+public void handleMessage(MuKCastServer server, Message message) {
+  PVector position = ((PVectorMessage)message).getPVector();
+  println(position);
+  println("i recieved a message");
   players.add(((PVectorMessage) message).getPVector());
 }
 
